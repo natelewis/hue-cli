@@ -38,7 +38,7 @@ Commands:
   o, off           Switch all lights off
 ```
 
-### CIL Examples
+### CLI Examples
 
 #### hue setup
 
