@@ -20,8 +20,11 @@ Commands:
     -i, --ip       Set bridge ip (use first bridge if not specified)
     --force        Force setup if already configured
 
-  l, lights        Lights attached to bridge
-    -l, --list
+  l, light         Set or list lights attached to the bridge
+    -l, --list     List all the lights
+    -s, --set      Set a light state by passing it --id and --state
+    --id           Light id you are setting
+    --state        Set light to this state JSON
 
   s, scene <name>  Activate scene starting with <name>
     -l, --list     List scenes, using <name> as optional filter
@@ -105,6 +108,25 @@ class HueCli {
       }, () => this._exit('No bridge found'));
   }
 
+  setLight(id = null, state = {}) {
+    if (!id) {
+      this._exit('No light id specified');
+    }
+    if (!state) {
+      this._exit('No light state JSON specified');
+    }
+    try {
+      JSON.parse(state);
+    } catch (e) {
+      this._exit('The state JSON is not valid JSON');
+    }
+
+    console.log("Setting light #" + id + " to " + state);
+    this.api.setLightState(id, JSON.parse(state)) // provide a value of false to turn off
+        .fail(error => console.log("Error: " + error))
+        .done();
+  }
+
   setupBridge(ip = null, force = false) {
     if (this._config.bridge && this._config.user && !force) {
       this._exit(`Bridge already configured at ${this._config.bridge}`, 0);
@@ -172,7 +194,7 @@ class HueCli {
     switch (_[0]) {
       case 'l':
       case 'lights':
-        return this.listLights();
+        return this._args.list ? this.listLights() : this.setLight(this._args.id,this._args.state);
       case 's':
       case 'scene':
         let name = _.slice(1).join(' ');
@@ -196,8 +218,8 @@ class HueCli {
 
 new HueCli(require('minimist')(process.argv.slice(2), {
   boolean: ['list', 'force', 'create'],
-  string: ['ip'],
-  number: ['max'],
+  string: ['ip', 'state'],
+  number: ['max', 'id'],
   alias: {
     l: 'list',
     c: 'create',

@@ -23,8 +23,11 @@ Commands:
     -i, --ip       Set bridge ip (use first bridge if not specified)
     --force        Force setup if already configured
 
-  l, lights        Update or show individual light states
-    -l, --list     List lights showing the id and name and current state
+  l, light         Set or list lights attached to the bridge
+    -l, --list     List all the lights
+    -s, --set      Set a light state by passing it --id and --state
+    --id           Light id you are setting
+    --state        Set light to this state JSON
 
   s, scene <name>  Activate scene starting with <name>
     -l, --list     List scenes, using <name> as optional filter
