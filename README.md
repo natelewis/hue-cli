@@ -37,3 +37,7 @@ Commands:
   i, on            Switch all lights on  
   o, off           Switch all lights off
 ```
+
+### Fun Examples
+
+To use bash examples update the /examples/lights.txt with a list of light IDs you want to use.  These bash scripts use the CLI to show a couple fun patterns with the lights you have in the list.
