@@ -19,13 +19,16 @@ Commands:
     -l, --list     List bridges on the network
     -i, --ip       Set bridge ip (use first bridge if not specified)
     --force        Force setup if already configured
-    
+
+  l, lights        Lights attached to bridge
+    -l, --list
+
   s, scene <name>  Activate scene starting with <name>
     -l, --list     List scenes, using <name> as optional filter
     -m, --max <n>  Show at most <n> scenes when listing (10 by default)
     -c, --create   Create scene <name> using current lights state
-    
-  i, on            Switch all lights on  
+
+  i, on            Switch all lights on
   o, off           Switch all lights off
 `;
 
@@ -43,6 +46,16 @@ class HueCli {
 
   switchLights(on = false) {
     return this.api.setGroupLightState(0, { 'on': on });
+  }
+
+  displayLightList(result) {
+    result.lights.forEach(l => console.log( "#" + l.id + ":"  + l.name + "\n" + JSON.stringify(l.state, null, 2)+ "\n\n"));
+  }
+
+  listLights() {
+    return this.api
+      .lights()
+      .then(this.displayLightList);
   }
 
   listScenes(name, max, print = false) {
@@ -157,6 +170,9 @@ class HueCli {
   _runCommand() {
     const _ = this._args._;
     switch (_[0]) {
+      case 'l':
+      case 'lights':
+        return this.listLights();
       case 's':
       case 'scene':
         let name = _.slice(1).join(' ');
