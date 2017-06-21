@@ -38,7 +38,23 @@ Commands:
   o, off           Switch all lights off
 ```
 
-### Fun Examples
+### CIL Examples
+
+#### hue setup
+
+Press button on your hue bridge and run:
+```
+hue setup
+```
+
+#### hue light
+
+Set your brightness of light ID 3 to 200:
+```
+hue l -s --id 3 --state '{"bri":200}'
+```
+
+### Fun Scripted Examples
 
 To use bash examples update the /examples/lights.txt with a list of light IDs you want to use.  These bash scripts use the CLI to show a couple fun patterns with the lights you have in the list.
 
