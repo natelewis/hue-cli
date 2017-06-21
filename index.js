@@ -118,7 +118,7 @@ class HueCli {
     try {
       JSON.parse(state);
     } catch (e) {
-      this._exit('The state JSON is not valid JSON');
+      this._exit('The state JSON is not valid JSON: ' + state);
     }
 
     console.log("Setting light #" + id + " to " + state);
